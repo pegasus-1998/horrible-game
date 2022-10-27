@@ -30,16 +30,20 @@
     margin-top: 20px;
     width: 80px;
     height: 80px;
+    transition: all .1s ease-in;
+    transform: translateX(240px) translateY(240px);
 }
 
 .game-container .monster-gif {
     position: absolute;
-    right: 0;
-    bottom: 0;
-    margin-right: 20px;
-    margin-bottom: 20px;
+    top: 0;
+    left: 0;
+    margin-left: 20px;
+    margin-top: 20px;
     width: 80px;
     height: 80px;
+    transition: all .1s ease-in;
+    transform: translateX(480px) translateY(480px);
 }
 
 .nav-menu {
