@@ -1,12 +1,35 @@
 (function () {
-    let x = 240
+     // 玩偶初始所在xy轴以及在第几个格子
+    let x = 240  
     let y = 240
-    let m_x1 = 480
-    let m_y1 = 480
+    let currentLocation = 13 
+
+    // 四个怪物初始所在xy轴以及在第几个格子
+    const monstersXY = [
+        {
+            x: 0,
+            y: 0,
+            currentLocation: 1
+        },
+        {
+            x: 480,
+            y: 0,
+            currentLocation: 5
+        },
+        {
+            x: 0,
+            y: 480,
+            currentLocation: 21
+        },
+        {
+            x: 480,
+            y: 480,
+            currentLocation: 25
+        }
+    ]
+
     let timer = null
     let playType = 1  // 1: 游戏未开始 2: 游戏进行中 3: 暂停游戏 4: 游戏结束
-    let currentLocation = 1
-    const monsterCurrentLocations = [25]
     const grids = [
         { x: 0, y: 0, curLocation: 1 },
         { x: 120, y: 0, curLocation: 2 },
@@ -38,14 +61,9 @@
     const playGameIcon = document.querySelector('.play-game-icon')
     const playGameText = document.querySelector('.play-game-text')
     const lovelyEl = document.querySelector('.lovely-gif')
-    const monsterEl = document.querySelector('.monster-gif')
+    const monstersEl = document.querySelectorAll('.monster-gif')
 
-    initGameHandler()
-
-
-    function initGameHandler() {
-        playGame.addEventListener('click', playGameHandler)
-    }
+    playGame.addEventListener('click', playGameHandler)
 
     function playGameHandler() {
         if (playType === 1) {
@@ -64,7 +82,7 @@
         playGameText.textContent = '暂停游戏'
         playGameIcon.src = './imgs/icon/pause.png'
         document.addEventListener('keydown', keyDownHandler)
-        timer = setInterval(() => monsterMoveOneSquare(), 500)
+        timer = setInterval(() => monsterMoveOneSquare(), 1000)
     }
 
 
@@ -83,7 +101,7 @@
         document.addEventListener('keydown', keyDownHandler)
         timer = setInterval(() => {
             monsterMoveOneSquare()
-        }, 500)
+        }, 1000)
     }
 
     function overGame() {   // 结束游戏
@@ -96,18 +114,34 @@
             alert('游戏失败！')
             x = 240
             y = 240
-            m_x1 = 480
-            m_y1 = 480
-            currentLocation = 1
-            monsterCurrentLocations[0] = 25
+            currentLocation = 13
             lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
-            monsterEl.style.transform = `translateX(${m_x1}px) translateY(${m_y1}px)`
+            monstersXY.forEach((item, index) => {
+                if(index === 0) {
+                    item.x = 0
+                    item.y = 0
+                    item.currentLocation = 1
+                }else if(index === 1) {
+                    item.x = 480
+                    item.y = 0
+                    item.currentLocation = 5
+                }else if(index === 2) {
+                    item.x = 0
+                    item.y = 480
+                    item.currentLocation = 21
+                }else if(index === 3) {
+                    item.x = 480
+                    item.y = 480
+                    item.currentLocation = 28
+                }
+                monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`
+            })
         }, 1000)
     }
 
     function sameLocation() {   // 判断玩偶与怪物是否在同一位置 
-        for(let i = 0; i < monsterCurrentLocations.length; i++) {
-            if(monsterCurrentLocations[i] === currentLocation) {
+        for(let i = 0; i < monstersXY.length; i++) {
+            if(monstersXY[i].currentLocation === currentLocation) {
                 overGame()
             }
         }
@@ -150,24 +184,26 @@
         sameLocation()
     }
 
-    function monsterMoveOneSquare() {   // 怪物移动
-        const type = randomNumDirection()
-        if (type === 1 && m_y1 != 0) {
-            m_y1 -= 120
-        } else if (type === 2 && m_x1 != 480) {
-            m_x1 += 120
-        } else if (type === 3 && m_y1 != 480) {
-            m_y1 += 120
-        } else if (type === 4 && m_x1 != 0) {
-            m_x1 -= 120
-        }
-        for (const item of grids) {
-            if (m_x1 === item.x && m_y1 === item.y) {
-                monsterCurrentLocations[0] = item.curLocation
-                break
+    function monsterMoveOneSquare() {   // 四个怪物移动
+        monstersXY.forEach((item, index) => {
+            const type = randomNumDirection()
+            if (type === 1 && item.y != 0) {
+                item.y -= 120
+            } else if (type === 2 && item.x != 480) {
+                item.x += 120
+            } else if (type === 3 && item.y != 480) {
+                item.y += 120
+            } else if (type === 4 && item.x != 0) {
+                item.x -= 120
             }
-        }
-        monsterEl.style.transform = `translateX(${m_x1}px) translateY(${m_y1}px)`
+            for(const grid of grids) {
+                if(item.x === grid.x && item.y === grid.y ) {
+                    item.currentLocation = grid.curLocation
+                    break
+                }
+            }
+            monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`
+        })
         sameLocation()
     }
 

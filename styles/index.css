@@ -43,6 +43,17 @@
     width: 80px;
     height: 80px;
     transition: all .1s ease-in;
+}
+
+.base-m-gif2 {
+    transform: translateX(480px) translateY(0px);
+}
+
+.base-m-gif3 {
+    transform: translateX(0) translateY(480px);
+}
+
+.base-m-gif4 {
     transform: translateX(480px) translateY(480px);
 }
 
