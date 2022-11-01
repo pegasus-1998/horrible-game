@@ -1,11 +1,12 @@
 (function () {
-     // 玩偶初始所在xy轴以及在第几个格子
+
+    // 玩偶初始所在xy轴以及在第几个格子
     let x = 240  
     let y = 240
     let currentLocation = 13 
 
     // 四个怪物初始所在xy轴以及在第几个格子
-    const monstersXY = [
+    let monstersXY = [
         {
             x: 0,
             y: 0,
@@ -27,10 +28,13 @@
             currentLocation: 25
         }
     ]
+    const initMonsterXy = deepClone(monstersXY) 
 
     let timer = null
+    let dountDown = 1000 // 怪物速度
     let playType = 1  // 1: 游戏未开始 2: 游戏进行中 3: 暂停游戏 4: 游戏结束
-    const grids = [
+
+    const grids = [     // 存储每个格子的位置
         { x: 0, y: 0, curLocation: 1 },
         { x: 120, y: 0, curLocation: 2 },
         { x: 240, y: 0, curLocation: 3 },
@@ -57,23 +61,51 @@
         { x: 360, y: 480, curLocation: 24 },
         { x: 480, y: 480, curLocation: 25 }
     ]
+
     const playGame = document.querySelector('.play-game')
     const playGameIcon = document.querySelector('.play-game-icon')
     const playGameText = document.querySelector('.play-game-text')
     const lovelyEl = document.querySelector('.lovely-gif')
     const monstersEl = document.querySelectorAll('.monster-gif')
+    const levelItems = document.querySelectorAll('.level-item')
+    const hoverContainer = document.querySelector('.hover-show-container')
+    const navSelect = document.querySelector('.nav-select')
 
     playGame.addEventListener('click', playGameHandler)
+    seletLevel()
 
     function playGameHandler() {
-        if (playType === 1) {
+        if (playType === 1 || playType === 4) {
             startGame()
         } else if (playType === 2) {
             pauseGame()
         } else if (playType === 3) {
             continueGame()
-        }else if(playType === 4) {
-            startGame()
+        }
+    }
+
+    function initGame(flag) {   // 游戏初始化  flag=> true: 选择关卡 false: 游戏失败
+        clearInterval(timer)
+        document.removeEventListener('keydown', keyDownHandler)
+        x = 240
+        y = 240
+        currentLocation = 13
+        monstersXY = deepClone(initMonsterXy)
+        if(flag) {
+            playType = 1
+            playGameText.textContent = '开始游戏'
+            playGameIcon.src = './imgs/icon/play.png'
+            lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
+            monstersXY.forEach((item, index) => monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`)
+        }else {
+            playType = 4
+            playGameText.textContent = '重新开始'
+            playGameIcon.src = './imgs/icon/refresh.png'
+            setTimeout(() => {
+                alert('游戏失败！')
+                lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
+                monstersXY.forEach((item, index) => monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`)
+            }, 1000)
         }
     }
 
@@ -82,9 +114,8 @@
         playGameText.textContent = '暂停游戏'
         playGameIcon.src = './imgs/icon/pause.png'
         document.addEventListener('keydown', keyDownHandler)
-        timer = setInterval(() => monsterMoveOneSquare(), 1000)
+        timer = setInterval(() => monsterMoveOneSquare(), dountDown)
     }
-
 
     function pauseGame() {   // 暂停游戏
         playType = 3
@@ -99,50 +130,13 @@
         playGameText.textContent = '暂停游戏'
         playGameIcon.src = './imgs/icon/pause.png'
         document.addEventListener('keydown', keyDownHandler)
-        timer = setInterval(() => {
-            monsterMoveOneSquare()
-        }, 1000)
-    }
-
-    function overGame() {   // 结束游戏
-        playType = 4
-        playGameText.textContent = '重新开始'
-        playGameIcon.src = './imgs/icon/refresh.png'
-        clearInterval(timer)
-        document.removeEventListener('keydown', keyDownHandler)
-        setTimeout(() => {
-            alert('游戏失败！')
-            x = 240
-            y = 240
-            currentLocation = 13
-            lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
-            monstersXY.forEach((item, index) => {
-                if(index === 0) {
-                    item.x = 0
-                    item.y = 0
-                    item.currentLocation = 1
-                }else if(index === 1) {
-                    item.x = 480
-                    item.y = 0
-                    item.currentLocation = 5
-                }else if(index === 2) {
-                    item.x = 0
-                    item.y = 480
-                    item.currentLocation = 21
-                }else if(index === 3) {
-                    item.x = 480
-                    item.y = 480
-                    item.currentLocation = 28
-                }
-                monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`
-            })
-        }, 1000)
+        timer = setInterval(() => monsterMoveOneSquare(), dountDown)
     }
 
     function sameLocation() {   // 判断玩偶与怪物是否在同一位置 
         for(let i = 0; i < monstersXY.length; i++) {
             if(monstersXY[i].currentLocation === currentLocation) {
-                overGame()
+                initGame(false)
             }
         }
     }
@@ -174,12 +168,7 @@
         } else if (type === 4 && x != 0) {
             x -= 120
         }
-        for (const item of grids) {
-            if (x === item.x && y === item.y) {
-                currentLocation = item.curLocation
-                break
-            }
-        }
+        currentLocation = queryGridLoca(x, y)
         lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
         sameLocation()
     }
@@ -196,19 +185,49 @@
             } else if (type === 4 && item.x != 0) {
                 item.x -= 120
             }
-            for(const grid of grids) {
-                if(item.x === grid.x && item.y === grid.y ) {
-                    item.currentLocation = grid.curLocation
-                    break
-                }
-            }
+            item.currentLocation = queryGridLoca(item.x, item.y)
             monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`
         })
         sameLocation()
     }
 
+    function queryGridLoca(x, y) {  // 根据xy轴查询格子
+        for(const grid of grids) {
+            if(x === grid.x && y === grid.y) {
+                return grid.curLocation
+            }
+        }
+    }
+
     function randomNumDirection() {  // 怪物随机移动参数 1: top 2: right 3: down 4: left
         return Math.floor(Math.random() * 4 + 1)
     }
+
+    function seletLevel() {     // 选择关卡
+        levelItems.forEach((item, idx) => {
+            item.addEventListener('click', function() {
+                dountDown = 1000 - idx * 70
+                levelItems.forEach(sItem => sItem.className = 'level-item')
+                this.className = 'level-item level-active'
+                hoverContainer.style.display = 'none'
+                initGame(true)
+            })
+        })
+        navSelect.addEventListener('click', () => hoverContainer.style.display = 'block')
+    }
+
+    function deepClone(obj) {   // 深拷贝
+        let temp = null
+        if(typeof(obj) == 'object' && obj !== null) {
+            temp = obj instanceof Array ? [] : {}
+            for(let i in obj) {
+                temp[i] = deepClone(obj[i])
+            }
+        }else {
+            temp = obj
+        }
+        return temp
+    }
+    
 })()
 
