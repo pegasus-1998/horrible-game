@@ -71,7 +71,6 @@
     top: 50%;
     right: 150px;
     transform: translateY(-50%);
-    padding: 0 25px;
     font-size: 20px;
     letter-spacing: 2px;
     text-align: center;
@@ -80,12 +79,24 @@
     background: #fff;
 }
 
+.nav-menu .pass-count {
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    color: #fff;
+    padding: 15px;
+    background: var(--theme-color);
+}
+
+
 .nav-menu .nav-item {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    margin: 10px 0;
+    padding: 10px 20px;
 }
 
 .nav-menu .nav-item:hover {
@@ -98,45 +109,74 @@
     margin-right: 3px;
 }
 
-.hover-show-container {
-    display: none;
+.nav-menu .nav-select {
+    position: relative;
+}
+
+.nav-menu .nav-select:hover .select-level {
+    display: flex;
+}
+
+.nav-menu .nav-select .select-level {
     position: absolute;
     left: 0;
-    top: 0;
     transform: translateX(-100%);
-    padding: 10px;
+    display: none;
+    justify-content: center;
+    flex-wrap: wrap;
     width: 230px;
-    overflow: hidden;
+    opacity: .9;
+    text-align: center;
+    line-height: 50px;
     background: #fff;
 }
 
-.hover-show-container .select-level {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    opacity: .8;
-    text-align: center;
-    line-height: 50px;
-}
-
-.hover-show-container .select-level .level-item {
+.nav-menu .select-level .level-item {
     position: relative;
     cursor: pointer;
     width: 50px;
     height: 50px;
     color: #fff;
     margin: 8px;
+    transition: all .3s ease;
     background: var(--theme-color);
 }
 
-.hover-show-container .select-level .level-active::before {
+.nav-menu .select-level .level-item:hover {
+    transform: scale(1.1);
+}
+
+.nav-menu  .select-level .level-active::before {
     position: absolute;
     left: 0;
     top: 0;
     z-index: 999;
     content: '';
-    width: 15px;
-    height: 15px;
-    background: #006c54;
+    width: 17px;
+    height: 17px;
+    opacity: .5;
+    background: #000;
 }
 
+.nav-menu .nav-int {
+    position: relative;
+}
+
+.nav-menu .nav-int:hover .introduce {
+    display: block;
+}
+
+.nav-menu .nav-int .introduce {
+    display: none;
+    position: absolute;
+    left: 0;
+    transform: translateX(-100%);
+    width: 230px;
+    padding: 1em;
+    opacity: .9;
+    color: #000;
+    text-indent: 1em;
+    text-align: left;
+    line-height: 28px;
+    background: #fff;
+}

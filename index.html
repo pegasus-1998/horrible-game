@@ -12,9 +12,6 @@
 </head>
 
 <body>
-    <audio class="audio-el" loop>
-        <source src="./music/game-music.mp3" type="audio/mp3">
-    </audio>
     <div class="game-container">
         <img src="./imgs/lovely.gif" class="lovely-gif" />
         <img src="./imgs/monster.gif" class="monster-gif" />
@@ -48,6 +45,7 @@
         <div class="square-item"></div>
     </div>
     <div class="nav-menu">
+        <div class="pass-count">通关倒计时：<span class="count-time">45</span>s</div>
         <div class="nav-item play-game">
             <img src="./imgs/icon/play.png" class="menu-icon play-game-icon" />
             <span class="play-game-text">开始游戏</span>
@@ -55,16 +53,6 @@
         <div class="nav-item nav-select">
             <img src="./imgs/icon/select.png" class="menu-icon" />
             <span>选择关卡</span>
-        </div>
-        <div class="nav-item nav-int">
-            <img src="./imgs/icon/int.png" class="menu-icon" />
-            <span>玩法介绍</span>
-        </div>
-        <div class="nav-item nav-music">
-            <img src="./imgs/icon/close-music.png" class="menu-icon music-img" />
-            <span>声音</span>
-        </div>
-        <div class="hover-show-container">
             <ul class="select-level">
                 <li class="level-item level-active">1</li>
                 <li class="level-item">2</li>
@@ -80,7 +68,21 @@
                 <li class="level-item">12</li>
             </ul>
         </div>
+        <div class="nav-item nav-int">
+            <img src="./imgs/icon/int.png" class="menu-icon" />
+            <span>玩法介绍</span>
+            <div class="introduce">
+                通过鼠标的上下左右箭头操作玩偶，在规定的时间内躲避四个怪物的追捕!
+            </div>
+        </div>
+        <div class="nav-item nav-music">
+            <img src="./imgs/icon/close-music.png" class="menu-icon music-img" />
+            <span>声音</span>
+        </div>
     </div>
+    <audio class="audio-el" loop>
+        <source src="./music/game-music.mp3" type="audio/mp3">
+    </audio>
     <script src="./js/index.js"></script>
     <script src="./js/controlsOther.js"></script>
 </body>
