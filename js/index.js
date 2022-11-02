@@ -58,6 +58,7 @@
         { x: 480, y: 480, curLocation: 25 }
     ]
 
+    let count = 30
     let timer = null
     let passLevelTimer = null 
     let dountDown = 1000 // 怪物速度
@@ -70,10 +71,11 @@
     const monstersEl = document.querySelectorAll('.monster-gif')
     const levelItems = document.querySelectorAll('.level-item')
     const countTimeEl = document.querySelector('.count-time')
+    const noNumberEl = document.querySelector('.no-number')
 
     playGame.addEventListener('click', playGameHandler)
     seletLevel()
-    countDownPassLevel()
+    musicControls()
 
     function playGameHandler() {
         if (playType === 1 || playType === 4) {
@@ -85,13 +87,15 @@
         }
     }
 
-    function initGame(flag) {   // 游戏初始化  flag=> true: 选择关卡 false: 游戏失败
-        clearInterval(timer)
-        document.removeEventListener('keydown', keyDownHandler)
+    function initGame(flag) {   // 游戏初始化  flag=> true: 关卡 false: 游戏失败
         x = 240
         y = 240
+        count = 30
         currentLocation = 13
+        clearInterval(timer)
+        clearInterval(passLevelTimer)
         monstersXY = deepClone(initMonsterXy)
+        document.removeEventListener('keydown', keyDownHandler)
         if(flag) {
             playType = 1
             playGameText.textContent = '开始游戏'
@@ -104,6 +108,7 @@
             playGameIcon.src = './imgs/icon/refresh.png'
             setTimeout(() => {
                 alert('游戏失败！')
+                countTimeEl.textContent = count
                 lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
                 monstersXY.forEach((item, index) => monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`)
             }, 1000)
@@ -115,6 +120,7 @@
         playGameText.textContent = '暂停游戏'
         playGameIcon.src = './imgs/icon/pause.png'
         document.addEventListener('keydown', keyDownHandler)
+        countDownPassLevel()
         timer = setInterval(() => monsterMoveOneSquare(), dountDown)
     }
 
@@ -123,6 +129,7 @@
         playGameText.textContent = '继续游戏'
         playGameIcon.src = './imgs/icon/play.png'
         clearInterval(timer)
+        clearInterval(passLevelTimer)
         document.removeEventListener('keydown', keyDownHandler)
     }
 
@@ -130,6 +137,7 @@
         playType = 2
         playGameText.textContent = '暂停游戏'
         playGameIcon.src = './imgs/icon/pause.png'
+        countDownPassLevel()
         document.addEventListener('keydown', keyDownHandler)
         timer = setInterval(() => monsterMoveOneSquare(), dountDown)
     }
@@ -230,11 +238,12 @@
         return Math.floor(Math.random() * 4 + 1)
     }
 
-    function seletLevel() {     // 选择关卡
+    function seletLevel() {             // 选择关卡
         levelItems.forEach((item, idx) => {
             item.addEventListener('click', function() {
                 dountDown = 1000 - idx * 70
                 levelItems.forEach(sItem => sItem.className = 'level-item')
+                noNumberEl.textContent = `第${numIsAddZero(idx + 1)}关`
                 this.className = 'level-item level-active'
                 initGame(true)
             })
@@ -242,16 +251,31 @@
     }
 
     function countDownPassLevel() {  // 倒计时通关
-        let count = 45
         passLevelTimer = setInterval(() => {
             if(count === 0) {
-                clearInterval(passLevelTimer)
+                initGame(true)
             }else {
                 count--
-                const temp = count < 10 ? '0' + count : count
-                countTimeEl.textContent = temp
+                countTimeEl.textContent = numIsAddZero(count)
             }
-        }, 100)
+        }, 1000)
+    }
+
+    function musicControls() {   // 游戏声音
+        let playFlag = false  // true: 播放 false: 暂停
+        const navMusic = document.querySelector('.nav-music')
+        const audioEl = document.querySelector('.audio-el')
+        const musicImg = document.querySelector('.music-img')
+        navMusic.addEventListener('click', function () {
+            playFlag = !playFlag
+            if (playFlag) {
+                audioEl.play()
+                musicImg.src = './imgs/icon/music.png'
+            } else {
+                audioEl.pause()
+                musicImg.src = './imgs/icon/close-music.png'
+            }
+        })
     }
 
     function deepClone(obj) {   // 深拷贝
@@ -266,6 +290,14 @@
         }
         return temp
     }
-    
+
+    function hasClass(el, classStr) {  // 查询元素是否包含某个类
+        return el.classList.contains(classStr)
+    }
+
+    function numIsAddZero(num) {   // 两位数补零
+        return num < 10 ? '0' + num : num
+    }
+
 })()
 

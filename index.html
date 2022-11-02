@@ -7,11 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>小游戏-逃离怪物的追捕</title>
     <link rel=icon href='./favicon.ico'>
-    <link rel="stylesheet" href="./styles/common.css">
     <link rel="stylesheet" href="./styles/index.css">
 </head>
 
 <body>
+    <div class="pass-count">
+        <span class="no-number">第01关</span>通关倒计时：
+        <span class="count-time">30</span>s
+    </div>
     <div class="game-container">
         <img src="./imgs/lovely.gif" class="lovely-gif" />
         <img src="./imgs/monster.gif" class="monster-gif" />
@@ -45,7 +48,6 @@
         <div class="square-item"></div>
     </div>
     <div class="nav-menu">
-        <div class="pass-count">通关倒计时：<span class="count-time">45</span>s</div>
         <div class="nav-item play-game">
             <img src="./imgs/icon/play.png" class="menu-icon play-game-icon" />
             <span class="play-game-text">开始游戏</span>
@@ -72,19 +74,22 @@
             <img src="./imgs/icon/int.png" class="menu-icon" />
             <span>玩法介绍</span>
             <div class="introduce">
-                通过鼠标的上下左右箭头操作玩偶，在规定的时间内躲避四个怪物的追捕!
+                <p>通过键盘的上下左右(或wasd)键操控玩偶，在规定的时间内躲避四个怪物的追捕!</p>
             </div>
         </div>
         <div class="nav-item nav-music">
             <img src="./imgs/icon/close-music.png" class="menu-icon music-img" />
             <span>声音</span>
         </div>
+        <div class="nav-item">
+            <img src="./imgs/icon/set.png" class="menu-icon"/>
+            <span>设置</span>
+        </div>
     </div>
     <audio class="audio-el" loop>
         <source src="./music/game-music.mp3" type="audio/mp3">
     </audio>
     <script src="./js/index.js"></script>
-    <script src="./js/controlsOther.js"></script>
 </body>
 
 </html>

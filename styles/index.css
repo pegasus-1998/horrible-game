@@ -1,6 +1,50 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0 auto;
+    background-image: url('../imgs/hr-bg.jpg');
+}
+
+ul {
+    list-style: none;
+}
+
 :root {
     --theme-color: #45b97c;
     --theme-color2: #7fb80e;
+}
+
+.pass-count {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    color: rgba(253, 241, 241, 0.911);
+    padding: 15px;
+    font-size: 20px;
+}
+
+.pass-count .no-number {
+    margin-right: 10px;
+}
+
+ .pass-count .count-time {
+    color: #fff;
+    font-size: 46px;
+    font-weight: 700;
+    letter-spacing: 10px;
 }
 
 .game-container {
@@ -79,18 +123,6 @@
     background: #fff;
 }
 
-.nav-menu .pass-count {
-    position: absolute;
-    top: -40%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: max-content;
-    color: #fff;
-    padding: 15px;
-    background: var(--theme-color);
-}
-
-
 .nav-menu .nav-item {
     display: flex;
     justify-content: center;
@@ -118,6 +150,7 @@
 }
 
 .nav-menu .nav-select .select-level {
+    cursor: default;
     position: absolute;
     left: 0;
     transform: translateX(-100%);
@@ -154,8 +187,9 @@
     content: '';
     width: 17px;
     height: 17px;
-    opacity: .5;
-    background: #000;
+    opacity: .8;
+    background: #fff;
+    border: 2px dashed rgb(193, 207, 193);
 }
 
 .nav-menu .nav-int {
