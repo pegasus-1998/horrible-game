@@ -76,6 +76,7 @@
     playGame.addEventListener('click', playGameHandler)
     seletLevel()
     musicControls()
+    backgroundImg()
 
     function playGameHandler() {
         if (playType === 1 || playType === 4) {
@@ -297,6 +298,43 @@
 
     function numIsAddZero(num) {   // 两位数补零
         return num < 10 ? '0' + num : num
+    }
+
+    function backgroundImg() {     // 页面背景
+        const switchEl = document.querySelector('.switch')
+        let flag = false
+        let switchNum = 0
+        switchEl.addEventListener('click', function() {
+            flag = !flag
+            if(flag) {
+                switchNum++
+                this.style.background = '#000'
+                document.body.style.backgroundImage = "url('./imgs/hr-bg2.jpg')"
+                document.styleSheets[0].insertRule('.switch::after{transform: translateX(22px) !important;}', switchNum)
+            }else {
+                switchNum++
+                this.style.background = '#45b97c'
+                document.styleSheets[0].insertRule('.switch::after{transform: translateX(2px) !important;}',  switchNum)
+                document.body.style.backgroundImage = "url('./imgs/hr-bg.jpg')"
+            }
+        })
+    }
+    setHandModule()
+    function setHandModule() {  // 按键模式
+        let flag = false
+        const rightHand = document.querySelector('.set-hand .right-hand')
+        const hand = document.querySelector('.set-hand .hand')
+        const rightIcon = document.querySelector('.set-hand .right-icon')
+        rightHand.addEventListener('click', function() {
+            flag = !flag
+            if(flag) {
+                hand.textContent = '左手'
+                rightIcon.style = 'transform: rotate(-180deg);'
+            }else {
+                hand.textContent = '右手'
+                rightIcon.style = 'transform: rotate(0);'
+            }
+        })
     }
 
 })()

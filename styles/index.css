@@ -1,3 +1,8 @@
+:root {
+    --theme-color: #45b97c;
+    --theme-color2: #7fb80e;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -16,11 +21,6 @@ body {
 
 ul {
     list-style: none;
-}
-
-:root {
-    --theme-color: #45b97c;
-    --theme-color2: #7fb80e;
 }
 
 .pass-count {
@@ -201,6 +201,7 @@ ul {
 }
 
 .nav-menu .nav-int .introduce {
+    cursor: default;
     display: none;
     position: absolute;
     left: 0;
@@ -211,6 +212,77 @@ ul {
     color: #000;
     text-indent: 1em;
     text-align: left;
+    font-size: 18px;
     line-height: 28px;
     background: #fff;
+}
+
+.nav-menu .nav-set {
+    position: relative;
+}
+
+.nav-menu .nav-set:hover .seting {
+    display: block;
+    background: #fff;
+}
+
+.nav-menu .nav-set .seting {
+    cursor: default;
+    display: none;
+    position: absolute;
+    left: 0;
+    color: #000;
+    text-align: left;
+    font-size: 18px;
+    transform: translateX(-100%);
+}
+
+.nav-menu .nav-set .set-item {
+    margin: 12px;
+    width: max-content;
+}
+
+.nav-menu .nav-set .seting .switch {
+    display: inline-block;
+    position: relative;
+    transition: all .5s ease;
+    cursor: pointer;
+    width: 40px;
+    height: 20px;
+    border-radius: 10px;
+    vertical-align: middle;
+    background: var(--theme-color);
+}
+
+.nav-menu .nav-set .seting .switch::after {
+    position: absolute;
+    content: '';
+    top: 2px;
+    transform: translateX(2px);
+    transition: all .5s ease;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #fff;
+}
+
+.nav-menu .nav-set .seting .set-hand {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu .nav-set .seting .right-hand {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    color: #fff;
+    font-size: 14px;
+    border-radius: 4px;
+    background: var(--theme-color);
+}
+
+.nav-menu .nav-set .seting .right-icon {
+    width: 25px;
+    transition: all .5s ease;
 }
