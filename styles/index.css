@@ -286,3 +286,30 @@ ul {
     width: 25px;
     transition: all .5s ease;
 }
+
+.nav-menu .nav-set .volume-item {
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu .nav-set .volume-item .music-width{
+    cursor: pointer;
+    width: 100px;
+    height: 14px;
+    margin-right: 20px;
+    border: 2px dotted var(--theme-color2);
+    overflow: hidden;
+}
+
+.nav-menu .nav-set .volume-item .s-long {
+    width: 30px;
+    height: 10px;
+    transition: width .3s ease;
+    background: var(--theme-color);
+}
+
+.nav-menu .nav-set .volume-item .p-per {
+    position: absolute;
+    right: 0;
+    font-size: 12px;
+}

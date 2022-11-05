@@ -60,6 +60,7 @@
 
     let count = 30
     let timer = null
+    let keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
     let passLevelTimer = null 
     let dountDown = 1000 // 怪物速度
     let playType = 1  // 1: 游戏未开始 2: 游戏进行中 3: 暂停游戏 4: 游戏结束
@@ -75,6 +76,7 @@
 
     playGame.addEventListener('click', playGameHandler)
     seletLevel()
+    setHandModule()
     musicControls()
     backgroundImg()
 
@@ -115,7 +117,7 @@
             }, 1000)
         }
     }
-
+    
     function startGame() {   // 开始游戏
         playType = 2
         playGameText.textContent = '暂停游戏'
@@ -153,16 +155,16 @@
 
     function keyDownHandler(e) {  // 键盘事件
         switch (e.key) {
-            case 'ArrowUp':
+            case keyArrs[0]:
                 lovelyMoveOneSquare(1)
                 break
-            case 'ArrowRight':
+            case keyArrs[1]:
                 lovelyMoveOneSquare(2)
                 break
-            case 'ArrowDown':
+            case keyArrs[2]:
                 lovelyMoveOneSquare(3)
                 break
-            case 'ArrowLeft':
+            case keyArrs[3]:
                 lovelyMoveOneSquare(4)
                 break
         }
@@ -267,6 +269,9 @@
         const navMusic = document.querySelector('.nav-music')
         const audioEl = document.querySelector('.audio-el')
         const musicImg = document.querySelector('.music-img')
+        const musicWidth = document.querySelector('.music-width')
+        const sLong = document.querySelector('.s-long')
+        const pPer = document.querySelector('.p-per')
         navMusic.addEventListener('click', function () {
             playFlag = !playFlag
             if (playFlag) {
@@ -276,6 +281,16 @@
                 audioEl.pause()
                 musicImg.src = './imgs/icon/close-music.png'
             }
+        })
+        musicWidth.addEventListener('click', function(e) {
+            const size = e.offsetX + 2
+            if(size === 100) {
+                audioEl.volume = 1
+            }else {
+                audioEl.volume =  `${Number('0.' + size)}`
+            }
+            sLong.style.width = `${size}px`
+            pPer.textContent = `${size}%`
         })
     }
 
@@ -319,7 +334,7 @@
             }
         })
     }
-    setHandModule()
+    
     function setHandModule() {  // 按键模式
         let flag = false
         const rightHand = document.querySelector('.set-hand .right-hand')
@@ -330,9 +345,11 @@
             if(flag) {
                 hand.textContent = '左手'
                 rightIcon.style = 'transform: rotate(-180deg);'
+                keyArrs = ['w', 'd', 's', 'a']
             }else {
                 hand.textContent = '右手'
                 rightIcon.style = 'transform: rotate(0);'
+                keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
             }
         })
     }
