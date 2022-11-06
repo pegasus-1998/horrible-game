@@ -58,27 +58,58 @@
         { x: 480, y: 480, curLocation: 25 }
     ]
 
-    let count = 30
-    let timer = null
+    let count = 30   // 通关倒计秒数
+    let passLevelTimer = null  // 倒计时定时器
+    let timer = null  // 怪物定时器
     let keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
-    let passLevelTimer = null 
     let dountDown = 1000 // 怪物速度
     let playType = 1  // 1: 游戏未开始 2: 游戏进行中 3: 暂停游戏 4: 游戏结束
+    let levelIdx = 1  // 当前关卡
 
-    const playGame = document.querySelector('.play-game')
     const playGameIcon = document.querySelector('.play-game-icon')
     const playGameText = document.querySelector('.play-game-text')
     const lovelyEl = document.querySelector('.lovely-gif')
     const monstersEl = document.querySelectorAll('.monster-gif')
-    const levelItems = document.querySelectorAll('.level-item')
-    const countTimeEl = document.querySelector('.count-time')
-    const noNumberEl = document.querySelector('.no-number')
+    const countTimeEl = document.querySelector('.count-time')    
+    const maskContainer = document.querySelector('.mask-container')
 
-    playGame.addEventListener('click', playGameHandler)
-    seletLevel()
+    basePageMethods()
     setHandModule()
     musicControls()
     backgroundImg()
+
+    function basePageMethods() {
+        const playGame = document.querySelector('.play-game')
+        const cancelBtn = document.querySelector('.cancel')
+        const restartBtn = document.querySelector('.restart')
+        const nextBtn = document.querySelector('.next')
+        const prevBtn = document.querySelector('.prev')
+        const levelItems = document.querySelectorAll('.level-item')
+        playGame.addEventListener('click', playGameHandler)
+        cancelBtn.addEventListener('click', () => maskContainer.style.display = 'none')
+        restartBtn.addEventListener('click', function() {
+            maskContainer.style.display = 'none'
+            playGameHandler()
+        })
+        prevBtn.addEventListener('click', function() {
+            maskContainer.style.display = 'none'
+            levelIdx--
+            seletLevel()
+            playGameHandler()
+        })
+        nextBtn.addEventListener('click', function() {
+            maskContainer.style.display = 'none'
+            levelIdx++
+            seletLevel()
+            playGameHandler()
+        })
+        levelItems.forEach((item, idx) => {
+            item.addEventListener('click', function() {
+                levelIdx = idx + 1
+                seletLevel()
+            })
+        })
+    } 
 
     function playGameHandler() {
         if (playType === 1 || playType === 4) {
@@ -90,7 +121,7 @@
         }
     }
 
-    function initGame(flag) {   // 游戏初始化  flag=> true: 关卡 false: 游戏失败
+    function initGame(flag) {   // 游戏初始化  flag=> true: 通关或者选择关卡 false: 游戏失败
         x = 240
         y = 240
         count = 30
@@ -109,12 +140,13 @@
             playType = 4
             playGameText.textContent = '重新开始'
             playGameIcon.src = './imgs/icon/refresh.png'
+            gameTips(2)
             setTimeout(() => {
-                alert('游戏失败！')
+                maskContainer.style.display = 'block'
                 countTimeEl.textContent = count
                 lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
                 monstersXY.forEach((item, index) => monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`)
-            }, 1000)
+            }, 500)
         }
     }
     
@@ -241,27 +273,55 @@
         return Math.floor(Math.random() * 4 + 1)
     }
 
-    function seletLevel() {             // 选择关卡
-        levelItems.forEach((item, idx) => {
-            item.addEventListener('click', function() {
-                dountDown = 1000 - idx * 70
-                levelItems.forEach(sItem => sItem.className = 'level-item')
-                noNumberEl.textContent = `第${numIsAddZero(idx + 1)}关`
-                this.className = 'level-item level-active'
-                initGame(true)
-            })
-        })
+    function seletLevel() {  // 选择关卡
+        const noNumberEl = document.querySelector('.no-number')
+        const levelItems = document.querySelectorAll('.level-item')
+        dountDown = 1000 - (levelIdx * 70)
+        noNumberEl.textContent = `第${numIsAddZero(levelIdx)}关`
+        levelItems.forEach(sItem => sItem.className = 'level-item')
+        levelItems[levelIdx - 1].className = 'level-item level-active'
+        initGame(true)
     }
 
     function countDownPassLevel() {  // 倒计时通关
         passLevelTimer = setInterval(() => {
             if(count === 0) {
                 initGame(true)
+                gameTips(1)
+                maskContainer.style.display = 'block'
             }else {
                 count--
                 countTimeEl.textContent = numIsAddZero(count)
             }
-        }, 1000)
+        }, 100)
+    }
+
+    function gameTips(num) {  // 弹窗提示  num=> 1: 游戏成功  2：游戏失败
+        const tipsImg = document.querySelector('.tips-img')
+        const tipsText = document.querySelector('.tips-text')
+        const prevBtn = document.querySelector('.prev')
+        const nextBtn = document.querySelector('.next')
+        if(num === 1) {
+            tipsImg.src = './imgs/win.jpg'
+            tipsText.textContent = '通关成功'
+            tipsText.style.color = 'green'
+        }
+        if(num === 2) {
+            tipsImg.src = './imgs/fail.png'
+            tipsText.textContent = '通关失败'
+            tipsText.style.color = 'red'
+        }
+        levelIdx === 1 ? prevBtn.style.display = 'none' : prevBtn.style.display = 'block'
+        levelIdx === 12 ? nextBtn.style.display = 'none' :  nextBtn.style.display = 'block'
+        // document.addEventListener('keydown', function(e) {
+        //     if(e.key === 'Enter') {
+
+        //     }
+        //     if(e.key === " ") {
+        //         playGameHandler()
+        //         maskContainer.style.display = 'none'
+        //     }
+        // })
     }
 
     function musicControls() {   // 游戏声音
@@ -272,6 +332,7 @@
         const musicWidth = document.querySelector('.music-width')
         const sLong = document.querySelector('.s-long')
         const pPer = document.querySelector('.p-per')
+        audioEl.volume = 0.3
         navMusic.addEventListener('click', function () {
             playFlag = !playFlag
             if (playFlag) {
@@ -292,27 +353,6 @@
             sLong.style.width = `${size}px`
             pPer.textContent = `${size}%`
         })
-    }
-
-    function deepClone(obj) {   // 深拷贝
-        let temp = null
-        if(typeof(obj) == 'object' && obj !== null) {
-            temp = obj instanceof Array ? [] : {}
-            for(let i in obj) {
-                temp[i] = deepClone(obj[i])
-            }
-        }else {
-            temp = obj
-        }
-        return temp
-    }
-
-    function hasClass(el, classStr) {  // 查询元素是否包含某个类
-        return el.classList.contains(classStr)
-    }
-
-    function numIsAddZero(num) {   // 两位数补零
-        return num < 10 ? '0' + num : num
     }
 
     function backgroundImg() {     // 页面背景
@@ -352,6 +392,27 @@
                 keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
             }
         })
+    }
+
+    function numIsAddZero(num) {   // 两位数补零
+        return num < 10 ? '0' + num : num
+    }
+
+    function deepClone(obj) {   // 深拷贝
+        let temp = null
+        if(typeof(obj) == 'object' && obj !== null) {
+            temp = obj instanceof Array ? [] : {}
+            for(let i in obj) {
+                temp[i] = deepClone(obj[i])
+            }
+        }else {
+            temp = obj
+        }
+        return temp
+    }
+
+    function hasClass(el, classStr) {  // 查询元素是否包含某个类
+        return el.classList.contains(classStr)
     }
 
 })()

@@ -15,8 +15,8 @@ html {
 
 body {
     height: 100%;
-    margin: 0 auto;
     background-image: url('../imgs/hr-bg.jpg');
+    background-repeat: no-repeat;
 }
 
 ul {
@@ -312,4 +312,89 @@ ul {
     position: absolute;
     right: 0;
     font-size: 12px;
+}
+
+.mask-container {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.mask-container .pupup {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 530px;
+    margin: 0 auto;
+    margin-top: 8%;
+    padding: 15px;
+    font-size: 18px;
+    border-radius: 6px;
+    background: #fff;
+    user-select: none;
+}
+
+.mask-container .pupup .main-con {
+    flex: 1;
+    position: relative;
+}
+
+.mask-container .pupup .tips-img {
+    display: block;
+    width: 460px;
+    height: 230px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+.mask-container .pupup .tips-text {
+    position: absolute;
+    top: 25%;
+    right: 0;
+    writing-mode: vertical-lr;
+    height: max-content;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: 10px;
+    color: var(--theme-color);
+}
+
+.mask-container .pupup .tops-context {
+    text-align: center;
+    color: #999;
+}
+
+.mask-container .pupup .btns {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.mask-container .pupup .btns .btn-sp {
+    cursor: pointer;
+    padding: 13px 18px;
+    border-radius: 6px;
+}
+
+.mask-container .pupup .btns .btn-sp:hover {
+    opacity: .8;
+}
+
+.mask-container .pupup .btns .cancel {
+    border: 1px solid #ccc;
+}
+
+.mask-container .pupup .btns .restart {
+    color: #fff;
+    background: var(--theme-color2);
+}
+
+.mask-container .pupup .btns .prev, .next {
+    color: #fff;
+    background: var(--theme-color);
 }
