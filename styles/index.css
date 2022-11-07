@@ -175,6 +175,14 @@ ul {
     background: var(--theme-color);
 }
 
+.nav-menu .select-level .level-item .pass-icon {
+    display: none;
+    position: absolute;
+    width: 20px;
+    bottom: 0;
+    right: 0;
+}
+
 .nav-menu .select-level .level-item:hover {
     transform: scale(1.1);
 }
@@ -210,11 +218,25 @@ ul {
     padding: 1em;
     opacity: .9;
     color: #000;
-    text-indent: 1em;
     text-align: left;
     font-size: 18px;
     line-height: 28px;
     background: #fff;
+}
+ 
+.nav-menu .nav-int .introduce .int-p {
+    text-indent: 1em;
+    margin-bottom: 10px;
+}
+
+.nav-menu .nav-int .get-prize {
+    cursor: no-drop;
+    width: 110px;
+    padding: 5px 0;
+    color: #fff;
+    text-align: center;
+    margin: 0 auto;
+    background: #999;
 }
 
 .nav-menu .nav-set {
@@ -312,6 +334,12 @@ ul {
     position: absolute;
     right: 0;
     font-size: 12px;
+}
+
+.nav-menu .nav-set .notes {
+    width: 180px;
+    font-size: 16px;
+    color: var(--theme-color2);
 }
 
 .mask-container {

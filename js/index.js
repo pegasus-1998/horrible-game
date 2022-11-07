@@ -65,6 +65,7 @@
     let dountDown = 1000 // 怪物速度
     let playType = 1  // 1: 游戏未开始 2: 游戏进行中 3: 暂停游戏 4: 游戏结束
     let levelIdx = 1  // 当前关卡
+    const passLevelIdxs = []   // 保存已经通过的关卡
 
     const playGameIcon = document.querySelector('.play-game-icon')
     const playGameText = document.querySelector('.play-game-text')
@@ -85,6 +86,7 @@
         const nextBtn = document.querySelector('.next')
         const prevBtn = document.querySelector('.prev')
         const levelItems = document.querySelectorAll('.level-item')
+        const getPrize = document.querySelector('.get-prize')
         playGame.addEventListener('click', playGameHandler)
         cancelBtn.addEventListener('click', () => maskContainer.style.display = 'none')
         restartBtn.addEventListener('click', function() {
@@ -102,6 +104,11 @@
             levelIdx++
             seletLevel()
             playGameHandler()
+        })
+        getPrize.addEventListener('click', function() {
+            if(passLevelIdxs.length === 12) {
+                alert('获取成功，在URL地址栏上粘贴链接即可领取。')
+            }
         })
         levelItems.forEach((item, idx) => {
             item.addEventListener('click', function() {
@@ -286,6 +293,7 @@
     function countDownPassLevel() {  // 倒计时通关
         passLevelTimer = setInterval(() => {
             if(count === 0) {
+                savePassLevelIdx()
                 initGame(true)
                 gameTips(1)
                 maskContainer.style.display = 'block'
@@ -293,7 +301,20 @@
                 count--
                 countTimeEl.textContent = numIsAddZero(count)
             }
-        }, 100)
+        }, 1000)
+    }
+
+    function savePassLevelIdx() {   // 保存通过的关卡
+        const flag = passLevelIdxs.some(item => item === levelIdx)
+        !flag && passLevelIdxs.push(levelIdx)
+        const levelItems = document.querySelectorAll('.level-item')
+        const nowPassIcon = levelItems[levelIdx - 1].children[0]
+        nowPassIcon.style.display = 'block'
+        if(passLevelIdxs.length === 12) {
+            const getPrize = document.querySelector('.get-prize')
+            getPrize.style.background = '#45b97c'
+            getPrize.style.cursor = 'pointer'
+        }   
     }
 
     function gameTips(num) {  // 弹窗提示  num=> 1: 游戏成功  2：游戏失败
@@ -313,15 +334,6 @@
         }
         levelIdx === 1 ? prevBtn.style.display = 'none' : prevBtn.style.display = 'block'
         levelIdx === 12 ? nextBtn.style.display = 'none' :  nextBtn.style.display = 'block'
-        // document.addEventListener('keydown', function(e) {
-        //     if(e.key === 'Enter') {
-
-        //     }
-        //     if(e.key === " ") {
-        //         playGameHandler()
-        //         maskContainer.style.display = 'none'
-        //     }
-        // })
     }
 
     function musicControls() {   // 游戏声音
