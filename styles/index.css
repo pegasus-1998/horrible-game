@@ -276,7 +276,7 @@ ul {
     background: var(--theme-color);
 }
 
-.nav-menu .nav-set .seting .switch::after {
+.nav-menu .nav-set .seting .switch .sw-cricle {
     position: absolute;
     content: '';
     top: 2px;

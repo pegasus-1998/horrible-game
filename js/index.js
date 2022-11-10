@@ -107,6 +107,7 @@
         })
         getPrize.addEventListener('click', function() {
             if(passLevelIdxs.length === 12) {
+                copyJL()
                 alert('获取成功，在URL地址栏上粘贴链接即可领取。')
             }
         })
@@ -369,19 +370,17 @@
 
     function backgroundImg() {     // 页面背景
         const switchEl = document.querySelector('.switch')
+        const swCircle = document.querySelector('.sw-cricle')
         let flag = false
-        let switchNum = 0
         switchEl.addEventListener('click', function() {
             flag = !flag
             if(flag) {
-                switchNum++
                 this.style.background = '#000'
+                swCircle.style.transform = 'translateX(22px)'
                 document.body.style.backgroundImage = "url('./imgs/hr-bg2.jpg')"
-                document.styleSheets[0].insertRule('.switch::after{transform: translateX(22px) !important;}', switchNum)
             }else {
-                switchNum++
                 this.style.background = '#45b97c'
-                document.styleSheets[0].insertRule('.switch::after{transform: translateX(2px) !important;}',  switchNum)
+                swCircle.style.transform = 'translateX(2px)'
                 document.body.style.backgroundImage = "url('./imgs/hr-bg.jpg')"
             }
         })
@@ -425,6 +424,26 @@
 
     function hasClass(el, classStr) {  // 查询元素是否包含某个类
         return el.classList.contains(classStr)
+    }
+
+    function copyJL() {
+        const JL = 'http://pgs98.com/horrible-game/imgs/JL.jpg'
+        if(navigator.clipboard) {
+            navigator.clipboard.writeText(JL)
+            return
+        }
+        const copyInput = document.createElement('input')
+        copyInput.style.position = 'fixed'
+        copyInput.style.left = '-100%'
+        copyInput.style.top = '0'
+        copyInput.style.zIndex = -100
+        copyInput.style.opacity = 0
+        document.body.appendChild(copyInput)
+        copyInput.value = JL
+        copyInput.focus()
+        copyInput.select()
+        document.execCommand('copy')
+        document.body.removeChild(copyInput)
     }
 
 })()
