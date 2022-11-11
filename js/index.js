@@ -78,6 +78,8 @@
     setHandModule()
     musicControls()
     backgroundImg()
+    changeLanguage()
+    languageStr(false)
 
     function basePageMethods() {
         const playGame = document.querySelector('.play-game')
@@ -405,26 +407,34 @@
         })
     }
 
-    function numIsAddZero(num) {   // 两位数补零
-        return num < 10 ? '0' + num : num
+    function changeLanguage() {
+        const switchLanEl = document.querySelector('.switch-lan')
+        const swCricleLan = document.querySelector('.sw-cricle-lan')
+        let flag = false
+        switchLanEl.addEventListener('click', function() {
+            flag = !flag
+            languageStr(flag)
+            if(flag) swCricleLan.style.transform = 'translateX(0)'
+            else swCricleLan.style.transform = 'translateX(60px)'
+        })
     }
 
-    function deepClone(obj) {   // 深拷贝
-        let temp = null
-        if(typeof(obj) == 'object' && obj !== null) {
-            temp = obj instanceof Array ? [] : {}
-            for(let i in obj) {
-                temp[i] = deepClone(obj[i])
-            }
-        }else {
-            temp = obj
-        }
-        return temp
-    }
-
-    function hasClass(el, classStr) {  // 查询元素是否包含某个类
-        return el.classList.contains(classStr)
-    }
+    function languageStr(flag) {
+        const selectLevelText = document.querySelector('.select-level-text')
+        const introduceText = document.querySelector('.introduce-text')
+        const musicText = document.querySelector('.music-text')
+        const setText = document.querySelector('.set-text')
+        const backgroundText = document.querySelector('.background-text')
+        const musicSize = document.querySelector('.music-size')
+        const playGameText = document.querySelector('.play-game-text')
+        selectLevelText.textContent = flag ? '选择关卡' : 'select level'
+        introduceText.textContent = flag ? '玩法介绍' : 'introduction'
+        musicText.textContent = flag ? '声音' : 'music'
+        setText.textContent = flag ? '设置' : 'set up'
+        backgroundText.textContent = flag ? '背景' : 'BG'
+        musicSize.textContent = flag ? '音量' : 'volume'
+        playGameText.textContent = flag ? '开始游戏' : 'start game'
+    }    
 
     function copyJL() {
         const JL = 'http://pgs98.com/horrible-game/imgs/JL.jpg'
@@ -444,6 +454,27 @@
         copyInput.select()
         document.execCommand('copy')
         document.body.removeChild(copyInput)
+    }
+    
+    function numIsAddZero(num) {   // 两位数补零
+        return num < 10 ? '0' + num : num
+    }
+
+    function deepClone(obj) {   // 深拷贝
+        let temp = null
+        if(typeof(obj) == 'object' && obj !== null) {
+            temp = obj instanceof Array ? [] : {}
+            for(let i in obj) {
+                temp[i] = deepClone(obj[i])
+            }
+        }else {
+            temp = obj
+        }
+        return temp
+    }
+
+    function hasClass(el, classStr) {  // 查询元素是否包含某个类
+        return el.classList.contains(classStr)
     }
 
 })()
