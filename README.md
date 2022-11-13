@@ -2,6 +2,8 @@
 
 A small game to avoid monsters
 
+html + css + javascript
+
 ## link
 
 - [online demo](https://pgs98.com/horrible-game/)

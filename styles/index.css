@@ -128,7 +128,7 @@ ul {
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    width: 200px;
+    min-width: 230px;
     height: 50px;
 }
 
@@ -232,7 +232,7 @@ ul {
 
 .nav-menu .nav-int .get-prize {
     cursor: no-drop;
-    width: 110px;
+    min-width: max-content;
     padding: 5px 0;
     color: #fff;
     text-align: center;
@@ -340,7 +340,7 @@ ul {
 }
 
 .nav-menu .nav-set .notes {
-    width: 180px;
+    width: 230px;
     font-size: 16px;
     color: var(--theme-color2);
 }
