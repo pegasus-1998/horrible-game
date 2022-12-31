@@ -61,7 +61,6 @@ let keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
 let dountDown = 1000
 let playType = 1
 let levelIdx = 1
-let lanFlag = false
 const passLevelIdxs = []
 
 const playGameIcon = document.querySelector('.play-game-icon')
@@ -75,8 +74,6 @@ basePageMethods()
 setHandModule()
 musicControls()
 backgroundImg()
-changeLanguage()
-languageStr(false)
 
 function basePageMethods() {
     const playGame = document.querySelector('.play-game')
@@ -107,7 +104,7 @@ function basePageMethods() {
     getPrize.addEventListener('click', function () {
         if (passLevelIdxs.length === 12) {
             copyJL()
-            const str = lanFlag ? '获取成功，在URL地址栏上粘贴链接即可领取。' : 'You can get it by pasting it on the URL address bar.'
+            const str = '获取成功，在URL地址栏上粘贴链接即可领取。'
             alert(`${str}`)
         }
     })
@@ -140,13 +137,13 @@ function initGame(flag) {
     document.removeEventListener('keydown', keyDownHandler)
     if (flag) {
         playType = 1
-        playGameText.textContent = lanFlag ? '开始游戏' : 'start game'
+        playGameText.textContent =  '开始游戏'
         playGameIcon.src = './imgs/icon/play.png'
         lovelyEl.style.transform = `translateX(${x}px) translateY(${y}px)`
         monstersXY.forEach((item, index) => monstersEl[index].style.transform = `translateX(${item.x}px) translateY(${item.y}px)`)
     } else {
         playType = 4
-        playGameText.textContent = lanFlag ? '重新开始' : 'restart'
+        playGameText.textContent = '重新开始'
         playGameIcon.src = './imgs/icon/refresh.png'
         gameTips(2)
         setTimeout(() => {
@@ -160,7 +157,7 @@ function initGame(flag) {
 
 function startGame() {
     playType = 2
-    playGameText.textContent = lanFlag ? '暂停游戏' : 'pause game'
+    playGameText.textContent = '暂停游戏'
     playGameIcon.src = './imgs/icon/pause.png'
     document.addEventListener('keydown', keyDownHandler)
     countDownPassLevel()
@@ -169,7 +166,7 @@ function startGame() {
 
 function pauseGame() {
     playType = 3
-    playGameText.textContent = lanFlag ? '继续游戏' : 'Continue game'
+    playGameText.textContent = '继续游戏'
     playGameIcon.src = './imgs/icon/play.png'
     clearInterval(timer)
     clearInterval(passLevelTimer)
@@ -178,7 +175,7 @@ function pauseGame() {
 
 function continueGame() {
     playType = 2
-    playGameText.textContent = lanFlag ? '暂停游戏' : 'pause game'
+    playGameText.textContent = '暂停游戏'
     playGameIcon.src = './imgs/icon/pause.png'
     countDownPassLevel()
     document.addEventListener('keydown', keyDownHandler)
@@ -277,15 +274,15 @@ function queryGridLoca(x, y) {
     }
 }
 
-function randomNumDirection() {
-    return Math.floor(Math.random() * 4 + 1)
+function randomNumDirection(num = 4) {
+    return Math.floor(Math.random() * num + 1)
 }
 
 function seletLevel() {
     const noNumberEl = document.querySelector('.no-number')
     const levelItems = document.querySelectorAll('.level-item')
     dountDown = 1000 - (levelIdx * 70)
-    noNumberEl.textContent = `NO.${numIsAddZero(levelIdx)}`
+    noNumberEl.textContent = `第${numIsAddZero(levelIdx)}关`
     levelItems.forEach(sItem => sItem.className = 'level-item')
     levelItems[levelIdx - 1].className = 'level-item level-active'
     initGame(true)
@@ -325,12 +322,12 @@ function gameTips(num) {
     const nextBtn = document.querySelector('.next')
     if (num === 1) {
         tipsImg.src = './imgs/win.jpg'
-        tipsText.textContent = lanFlag ? '通关成功' : 'success'
+        tipsText.textContent = '通关成功'
         tipsText.style.color = 'green'
     }
     if (num === 2) {
         tipsImg.src = './imgs/fail.png'
-        tipsText.textContent = lanFlag ? '通关失败' : 'fail'
+        tipsText.textContent = '通关失败'
         tipsText.style.color = 'red'
     }
     levelIdx === 1 ? prevBtn.style.display = 'none' : prevBtn.style.display = 'block'
@@ -394,83 +391,23 @@ function setHandModule() {
     rightHand.addEventListener('click', function () {
         flag = !flag
         if (flag) {
-            hand.textContent = lanFlag ? '左手' : 'left hand'
+            hand.textContent = '左手'
             rightIcon.style = 'transform: rotate(-180deg);'
             keyArrs = ['w', 'd', 's', 'a']
         } else {
-            hand.textContent = lanFlag ? '右手' : 'right hand'
+            hand.textContent = '右手'
             rightIcon.style = 'transform: rotate(0);'
             keyArrs = ['ArrowUp', 'ArrowRight', 'ArrowDown', 'ArrowLeft']
         }
     })
 }
 
-function changeLanguage() {
-    const switchLanEl = document.querySelector('.switch-lan')
-    const swCricleLan = document.querySelector('.sw-cricle-lan')
-    switchLanEl.addEventListener('click', function () {
-        lanFlag = !lanFlag
-        languageStr()
-        if (lanFlag) swCricleLan.style.transform = 'translateX(0)'
-        else swCricleLan.style.transform = 'translateX(60px)'
-    })
-}
-
-function languageStr() {
-    const selectLevelText = document.querySelector('.select-level-text')
-    const introduceText = document.querySelector('.introduce-text')
-    const musicText = document.querySelector('.music-text')
-    const setText = document.querySelector('.set-text')
-    const backgroundText = document.querySelector('.background-text')
-    const musicSize = document.querySelector('.music-size')
-    const playGameText = document.querySelector('.play-game-text')
-    const intP = document.querySelector('.int-p')
-    const getPrize = document.querySelector('.get-prize')
-    const keyModuleText = document.querySelector('.key-module-text')
-    const hand = document.querySelector('.hand')
-    const notes = document.querySelector('.notes')
-    const topsContext = document.querySelector('.tops-context')
-    const cancel = document.querySelector('.cancel')
-    const restart = document.querySelector('.restart')
-    const prev = document.querySelector('.prev')
-    const next = document.querySelector('.next')
-    selectLevelText.textContent = lanFlag ? '选择关卡' : 'select level'
-    introduceText.textContent = lanFlag ? '玩法介绍' : 'introduction'
-    musicText.textContent = lanFlag ? '声音' : 'music'
-    setText.textContent = lanFlag ? '设置' : 'set up'
-    backgroundText.textContent = lanFlag ? '背景' : 'BG'
-    musicSize.textContent = lanFlag ? '音量' : 'volume'
-    playGameText.textContent = lanFlag ? '开始游戏' : 'start game'
-    intP.textContent = lanFlag ? '通过键盘的上下左右(或wasd)键操控玩偶，在规定的时间内躲避四个怪物的追捕。通过所有关卡后可领取奖品！' : 'Use the up, down, left and right (or wasd) keys on the keyboard to control the doll and avoid the pursuit of four monsters within the specified time. You can get prizes after passing all levels!'
-    getPrize.textContent = lanFlag ? '领取奖品' : 'Receive prizes'
-    keyModuleText.textContent = lanFlag ? '按键模式' : 'Key press mode'
-    hand.textContent = lanFlag ? '右手' : 'right hand'
-    cancel.textContent = lanFlag ? '取消' : 'cancel'
-    restart.textContent = lanFlag ? '重新开始' : 'restart'
-    prev.textContent = lanFlag ? '上一关' : 'front level'
-    next.textContent = lanFlag ? '下一关' : 'next level'
-    notes.textContent = lanFlag ? '提示：左手模式控制wasd键，右手模式控制上下左右键。' : 'Tip: The left hand mode controls the wasd key, and the right hand mode controls the up, down, left and right keys.'
-    topsContext.textContent = lanFlag ? '提示：通过所有关卡后可在玩法介绍中领取奖品。' : 'Tip: After passing all levels, you can receive prizes in the game introduction.'
-}
-
 function copyJL() {
-    const JL = 'http://pgs98.com/horrible-game/imgs/JL.jpg'
+    randomNumDirection()
+    const JL = `https://pgs98.com/horrible-game/imgs/wmbz/wmbz${randomNumDirection(6)}.png`
     if (navigator.clipboard) {
         navigator.clipboard.writeText(JL)
-        return
     }
-    const copyInput = document.createElement('input')
-    copyInput.style.position = 'fixed'
-    copyInput.style.left = '-100%'
-    copyInput.style.top = '0'
-    copyInput.style.zIndex = -100
-    copyInput.style.opacity = 0
-    document.body.appendChild(copyInput)
-    copyInput.value = JL
-    copyInput.focus()
-    copyInput.select()
-    document.execCommand('copy')
-    document.body.removeChild(copyInput)
 }
 
 function numIsAddZero(num) {

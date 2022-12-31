@@ -1,12 +1,12 @@
 # horrible-game
 
-A small game to avoid monsters
+躲避怪物追捕的小游戏
 
 html + css + javascript
 
 ## link
 
-- [online demo](https://pgs98.com/horrible-game/)
+- [游戏链接](https://pgs98.com/horrible-game/)
 
 ## License
 

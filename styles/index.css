@@ -429,35 +429,3 @@ ul {
     color: #fff;
     background: var(--theme-color);
 }
-
-.lan-container {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-    user-select: none;
-}
-
-.lan-container .switch-lan {
-    cursor: pointer;
-    position: relative;
-    display: flex;
-    color: #fff;
-    font-size: 18px;
-    letter-spacing: 2px;
-    border: 3px solid #ccc;
-    border-radius: 4px;
-    background: var(--theme-color);
-}
-
-.lan-container .lan-sp {
-    width: 60px;
-    height: 40px;
-    line-height: 40px;
-    text-align: center;
-}
-
-.lan-container .sw-cricle-lan {
-    position: absolute;
-    background: var(--theme-color2);
-    transform: translateX(60px);
-}
